@@ -10,6 +10,9 @@ const mongoose = require('mongoose')
 mongoose.connect(process.env.MLAB_URI || 'mongodb://localhost/exercise-track' )
 mongoose.Promise = Promise;
 
+const User = require('./models/user');
+const Exercise = require('./models/exercise');
+
 app.use(cors())
 
 app.use(bodyParser.urlencoded({extended: false}))
@@ -46,6 +49,12 @@ app.use((err, req, res, next) => {
     .send(errMessage)
 })
 
+///////////////////////
+
+
+
+
+//////////////////////
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log('Your app is listening on port ' + listener.address().port)
 })
