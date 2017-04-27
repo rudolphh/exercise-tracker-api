@@ -24,6 +24,15 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html')
 });
 
+////////// route before the not found middleware
+
+const router = app.Router();
+router.post('/api/exercise/new-user', function (req, res) {
+  res.send(req.body.username);
+});
+
+
+//////////////////////
 
 // Not found middleware
 app.use((req, res, next) => {
@@ -49,12 +58,6 @@ app.use((err, req, res, next) => {
     .send(errMessage)
 })
 
-///////////////////////
-
-
-
-
-//////////////////////
 const listener = app.listen(process.env.PORT || 3000, () => {
   console.log('Your app is listening on port ' + listener.address().port)
 })
