@@ -26,8 +26,9 @@ app.get('/', (req, res) => {
 
 ////////// route before the not found middleware
 
-const router = app.Router();
-router.post('/api/exercise/new-user', function (req, res) {
+const router = express.Router();
+app.use('/api/exercise', router);
+router.post('/new-user', function (req, res) {
   res.send(req.body.username);
 });
 
