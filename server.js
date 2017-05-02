@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html')
 });
 
-////////// route before the not found middleware
+////////// route before the 'not found' middleware
 
 const apiRouter = require('./api-router');
 app.use('/api/exercise', apiRouter);
