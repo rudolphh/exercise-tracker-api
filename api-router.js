@@ -17,9 +17,16 @@ router.post('/new-user', function (req, res) {
   // OR
   //
   User.create({ username: req.body.username }, function(err, user){
-    if(err) console.log(err);
+    if(err) return console.log(err);
     res.json({ username: req.body.username, _id: user._id });
   });
+});
+
+router.get('/users', function(req, res) {
+  User.find({}, '-__v', function (err, users){
+    if(err) return console.log(err);
+    res.json(users);
+  })
 });
 
 
