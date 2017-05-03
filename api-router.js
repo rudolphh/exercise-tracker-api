@@ -45,10 +45,10 @@ router.post('/add', function(req, res) {
       description: req.body.description,
       duration: req.body.duration,
     };
-    newExercise = Exercise(req.body);
+    newExercise = Exercise(requestFields);
   } else {
     newExercise = Exercise(req.body);
-  } 
+  }
 
   newExercise.save(function(err, exercise){
     if(err) return console.log(err);
