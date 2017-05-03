@@ -40,5 +40,13 @@ router.post('/add', function(req, res) {
 
 });// end POST /add for adding exercise form data
 
+router.get('/all', function(req, res) {
+  Exercise.find({}, function (err, exercises){
+    if(err) return console.log(err);
+    res.json(exercises);
+  });
+});// end GET /all exercises for testing
+
+
 
 module.exports = router;
