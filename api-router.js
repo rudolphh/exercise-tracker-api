@@ -38,7 +38,33 @@ router.get('/users', function(req, res) {
 
 router.post('/add', function(req, res) {
 
+  let newExercise;
+  if(!req.body.date) {
+    let requestFields = {
+      userId: req.body.userId,
+      description: req.body.description,
+      duration: req.body.duration,
+    };
+    newExercise = Exercise(req.body);
+  } else {
+    newExercise = Exercise(req.body);
+  } 
+
+  newExercise.save(function(err, exercise){
+    if(err) return console.log(err);
+    else {
+      res.json(exercise);
+    }
+  });
+
+
 });// end POST /add for adding exercise form data
+
+
+router.get('/log', function(req, res) {
+
+});
+
 
 router.get('/all', function(req, res) {
   Exercise.find({}, function (err, exercises){
