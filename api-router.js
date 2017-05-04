@@ -6,11 +6,17 @@ const express = require('express');
 const router = express.Router();
 
 
-router.post('/new-user', function (req, res) {
+router.post('/new-user', function (req, res, next) {
 
-  var user = new User(req.body);
+  const user = new User(req.body);
   user.save(function(err, newUser){
-    if(err) return console.log(err);
+    if(err) {
+      if(err.code == 11000){
+        return next({ status: 400, message: 'Username taken'});
+      } else {
+        return next(err);
+      }
+    }
     res.json({ username: newUser.username, _id: newUser._id });
   });
 
