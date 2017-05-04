@@ -8,23 +8,14 @@ const router = express.Router();
 
 router.post('/new-user', function (req, res) {
 
-  var newUser = new User(req.body);
-  newUser.save(function(err, user){
+  var user = new User(req.body);
+  user.save(function(err, newUser){
     if(err) return console.log(err);
-    res.json({ username: user.username, _id: user._id });
+    res.json({ username: newUser.username, _id: newUser._id });
   });
 
-  //
-  // OR
-  //
-  // User.create({ username: req.body.username }, function(err, user){
-  //   if(err){
-  //     return console.log(err.errors);
-  //   }
-  //   res.json({ username: req.body.username, _id: user._id });
-  // });
-
 });// end POST /new-user for adding a new username and generate unique id
+
 
 
 router.get('/users', function(req, res) {
