@@ -11,6 +11,7 @@ router.post('/new-user', function (req, res, next) {
   const user = new User(req.body);
   user.save(function(err, newUser){
     //console.log(err.code);
+    // lets see if we can get this in userSchema.pre('save')
     if(err) {
       // unique username error, status 500 internal server error
       if(err.code === 11000){
@@ -37,6 +38,9 @@ router.get('/users', function(req, res) {
 
 router.post('/add', function(req, res) {
 
+  // first we need to validate, either exerciseSchema.pre('save')
+  // or handle here but we'll see first how much
+
   let newExercise;
   if(!req.body.date) {
     let requestFields = {
@@ -48,6 +52,8 @@ router.post('/add', function(req, res) {
   } else {
     newExercise = Exercise(req.body);
   }
+
+  // one we're validated we want to findByIdAndSave('_id')
 
   newExercise.save(function(err, exercise){
     if(err) return console.log(err);
@@ -61,7 +67,18 @@ router.post('/add', function(req, res) {
 
 
 router.get('/log', function(req, res) {
-
+  // use the obj res.body for queries as well because of body-parser
+  //
+  // GET /api/exercise/log?{userId}[&from][&to][&limit]
+  //
+  // { } = required, [ ] = optional
+  //
+  // from, to = dates (yyyy-mm-dd); limit = number
+  //
+  // so first we want to check what parameters we have, userId required
+    // if only userId, return all exercises logged
+    // else chain whichever others are requested and respond 
+    // with any appropriate errors in those requests
 });
 
 
