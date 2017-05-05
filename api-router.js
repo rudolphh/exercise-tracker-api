@@ -10,9 +10,11 @@ router.post('/new-user', function (req, res, next) {
 
   const user = new User(req.body);
   user.save(function(err, newUser){
+    //console.log(err.code);
     if(err) {
-      if(err.code == 11000){
-        return next({ status: 400, message: 'Username taken'});
+      // unique username error, status 500 internal server error
+      if(err.code === 11000){
+        return next(new Error('sorry, that username is taken'));
       } else {
         return next(err);
       }

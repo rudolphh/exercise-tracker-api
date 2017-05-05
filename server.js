@@ -8,7 +8,7 @@ const cors = require('cors')
 
 const mongoose = require('mongoose')
 mongoose.connect(process.env.MLAB_URI || 'mongodb://localhost/exercise-track' )
-//mongoose.Promise = Promise;
+mongoose.Promise = Promise;
 
 const User = require('./models/user');
 const Exercise = require('./models/exercise');
