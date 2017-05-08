@@ -66,18 +66,10 @@ router.post('/add', function(req, res, next) {
 
 
 router.get('/log', function(req, res, next) {
-  // use the obj res.body for queries as well because of body-parser
-  //
+
   // GET /api/exercise/log?{userId}[&from][&to][&limit]
-  //
-  // { } = required, [ ] = optional
-  //
+
   // from, to = dates (yyyy-mm-dd); limit = number
-  //
-  // so first we want to check what parameters we have, userId required
-    // if only userId, return all exercises logged
-    // else chain whichever others are requested and respond
-    // with any appropriate errors in those requests
 
     // for testing ryiTnqBkW userId for chloe
     // for testing ryPRhqBkb userId for lily
