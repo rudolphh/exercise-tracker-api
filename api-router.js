@@ -10,8 +10,7 @@ router.post('/new-user', function (req, res, next) {
 
   const user = new User(req.body);
   user.save(function(err, newUser){
-    //console.log(err.code);
-    // lets see if we can get this in userSchema.pre('save')
+
     if(err) {
       // unique username error, status 500 internal server error
       if(err.code === 11000){
@@ -34,9 +33,6 @@ router.get('/users', function(req, res, next) {
   });
 });// end GET /users
 
-
-// for testing ryiTnqBkW userId for chloe
-// for testing ryPRhqBkb userId for lily
 
 router.post('/add', function(req, res, next) {
 
@@ -69,7 +65,7 @@ router.post('/add', function(req, res, next) {
 });// end POST /add for adding exercise form data
 
 
-router.get('/log', function(req, res) {
+router.get('/log', function(req, res, next) {
   // use the obj res.body for queries as well because of body-parser
   //
   // GET /api/exercise/log?{userId}[&from][&to][&limit]
@@ -82,12 +78,22 @@ router.get('/log', function(req, res) {
     // if only userId, return all exercises logged
     // else chain whichever others are requested and respond
     // with any appropriate errors in those requests
+
+    // for testing ryiTnqBkW userId for chloe
+    // for testing ryPRhqBkb userId for lily
+
+
+  User.findById(req.query.userId, '-__v', function(err, user){
+    if(err) return next(err);
+    if(!user) return next(new Error('unknown _id'));
+      res.json(user);
+  });
 });
 
 
-router.get('/all', function(req, res) {
+router.get('/all', function(req, res, next) {
   Exercise.find({}, function (err, exercises){
-    if(err) return console.log(err);
+    if(err) return next(err);
     res.json(exercises);
   });
 });// end GET /all exercises for testing
