@@ -27,41 +27,44 @@ router.post('/new-user', function (req, res, next) {
 
 
 
-router.get('/users', function(req, res) {
+router.get('/users', function(req, res, next) {
   User.find({}, '-__v', function (err, users){
-    if(err) return console.log(err);
+    if(err) return next(err);
     res.json(users);
   });
 });// end GET /users
 
 
+// for testing ryiTnqBkW userId for chloe
+// for testing ryPRhqBkb userId for lily
 
-router.post('/add', function(req, res) {
+router.post('/add', function(req, res, next) {
 
-  // first we need to validate, either exerciseSchema.pre('save')
-  // or handle here but we'll see first how much
+  User.findById(req.body.userId, '-__v', function(err, user){
+    if(err) { return next(err); }
 
-  let newExercise;
-  if(!req.body.date) {
-    let requestFields = {
-      userId: req.body.userId,
-      description: req.body.description,
-      duration: req.body.duration,
-    };
-    newExercise = Exercise(requestFields);
-  } else {
-    newExercise = Exercise(req.body);
-  }
+    if(!user){ return next(new Error('unknown _id')); }
 
-  // one we're validated we want to findByIdAndSave('_id')
+    // if no date remove property so mongoose uses specified default
+    if(!req.body.date) { delete req.body.date; }
+    req.body.username = user.username;
 
-  newExercise.save(function(err, exercise){
-    if(err) return console.log(err);
-    else {
-      res.json(exercise);
-    }
-  });
+    const newExercise = Exercise(req.body);
+    newExercise.save(function(err, exercise){
+      if(err) return next(err);
 
+      const savedExercise = {
+        username: exercise.username,
+        description: exercise.description,
+        duration: exercise.duration,
+        _id: user._id,
+        date: exercise.date.toDateString()
+      }
+
+      res.json(savedExercise);
+    });
+
+  });// end findById
 
 });// end POST /add for adding exercise form data
 
@@ -77,7 +80,7 @@ router.get('/log', function(req, res) {
   //
   // so first we want to check what parameters we have, userId required
     // if only userId, return all exercises logged
-    // else chain whichever others are requested and respond 
+    // else chain whichever others are requested and respond
     // with any appropriate errors in those requests
 });
 
