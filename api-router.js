@@ -64,25 +64,16 @@ router.post('/add', function(req, res, next) {
 
 });// end POST /add for adding exercise form data
 
-
+// for testing ryiTnqBkW userId for chloe
+// for testing ryPRhqBkb userId for lily
 router.get('/log', function(req, res, next) {
-
-    // for testing ryiTnqBkW userId for chloe
-    // for testing ryPRhqBkb userId for lily
 
   User.findById(req.query.userId, '-__v', function(err, user){
     if(err) return next(err);
     if(!user) return next(new Error('unknown _id'));
 
-    console.log('from: %s', req.query.from);
-    console.log('to: %s', req.query.to);
-    console.log('limit: %s', req.query.limit);
-
     const from = new Date(req.query.from);
     const to = new Date(req.query.to);
-
-    console.log('from date: %s', from);
-    console.log('to date: %s', to);
 
     Exercise.find({
       userId: user._id,
@@ -96,6 +87,8 @@ router.get('/log', function(req, res, next) {
       const userExercises = {
         _id: user._id,
         username: user.username,
+        from: !isNaN(from) ? from.toDateString() : undefined,
+        to: !isNaN(to) ? to.toDateString(): undefined,
         count: exercises.length,
         log: exercises.map(function(e) {
           e = e.toObject();
