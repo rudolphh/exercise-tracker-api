@@ -67,18 +67,41 @@ router.post('/add', function(req, res, next) {
 
 router.get('/log', function(req, res, next) {
 
-  // GET /api/exercise/log?{userId}[&from][&to][&limit]
-
-  // from, to = dates (yyyy-mm-dd); limit = number
-
     // for testing ryiTnqBkW userId for chloe
     // for testing ryPRhqBkb userId for lily
-
 
   User.findById(req.query.userId, '-__v', function(err, user){
     if(err) return next(err);
     if(!user) return next(new Error('unknown _id'));
-      res.json(user);
+
+    console.log('from: %s', req.query.from);
+    console.log('to: %s', req.query.to);
+    console.log('limit: %s', req.query.limit);
+
+    const from = new Date(req.query.from);
+    const to = new Date(req.query.to);
+
+    Exercise.find({
+      userId: user._id,
+      date: { $gte: isNaN(from.getTime()) ? from.getTime() : 0,
+        $lt: isNaN(to.getTime()) ? to.getTime() : Date.now() }
+    }, '-_id').sort('-date').limit(parseInt(req.query.limit))
+    .select('description duration date')
+    .exec(function(err, exercises) {
+      if(err) return next(err);
+
+      const userExercises = {
+        _id: user._id,
+        username: user.username,
+        count: exercises.length,
+        log: exercises.map(function(e) {
+          e = e.toObject();
+          e.date = e.date.toDateString();
+          return e;
+        })
+      };
+      res.json(userExercises);
+    });
   });
 });
 
