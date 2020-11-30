@@ -7,7 +7,13 @@ const cors = require('cors')
 
 // mongoose
 const mongoose = require('mongoose')
-mongoose.connect(process.env.MLAB_URI || 'mongodb://localhost/exercise-track' )
+mongoose.connect(process.env.ATLAS_URI, {useNewUrlParser: true, useUnifiedTopology: true }, (err) => {
+  if (err)
+     console.error(err);
+  else
+     console.log("Connected to the mongodb"); 
+});
+
 mongoose.Promise = Promise;
 
 // api models
