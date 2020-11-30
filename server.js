@@ -25,10 +25,10 @@ app.use(cors())
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 
-
+const path = require('path');
 app.use(express.static('public'))
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/views/index.html')
+  res.sendFile(path.join(__dirname + '/views/index.html'))
 });
 
 ////////// route before the 'not found' middleware
