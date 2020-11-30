@@ -1,15 +1,16 @@
+require('dotenv').config(); 
 
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
-const dotenv = require('dotenv'); dotenv.load();
-
 const cors = require('cors')
 
+// mongoose
 const mongoose = require('mongoose')
 mongoose.connect(process.env.MLAB_URI || 'mongodb://localhost/exercise-track' )
 mongoose.Promise = Promise;
 
+// api models
 const User = require('./models/user');
 const Exercise = require('./models/exercise');
 
